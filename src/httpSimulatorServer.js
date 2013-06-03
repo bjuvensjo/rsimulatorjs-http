@@ -12,6 +12,7 @@ module.exports = (function () {
         
         // Create the httpSimulator
         var theHttpSimulator = httpSimulator.create({
+            simulator: options.httpSimulatorConfig.simulator,
             rootPath: options.httpSimulatorConfig.rootPath,
             useRootRelativePath: options.httpSimulatorConfig.useRootRelativePath
         });

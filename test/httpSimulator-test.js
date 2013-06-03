@@ -1,12 +1,85 @@
 var buster = require('buster');
-var fileUtils = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
+var httpSimulator = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
+var log = require('../../rsimulatorjs-core/src/util/log');
+
+var logger = log.getLogger('rsimulatorjs-http.httpSimulator-test');
+
+var getMockRequest = function () {
+    var mockRequest = {
+        method: 'POST',
+        url: 'service',
+        headers: {
+            'content-type': 'application/json'
+        },
+        on: function (name, callback) {
+            this[name] = callback;
+        }
+    };
+
+    return mockRequest;
+};
+
+var getMockResponse = function () {
+    var mockResponse = {
+        end: function () {
+            
+        },
+        write: function (responseString) {
+            this.responseString = responseString;
+        },
+        writeHead: function (status, headers) {
+            this.status = status;
+            this.headers = headers;
+        }            
+    };
+
+    return mockResponse;
+};
 
 buster.testCase('httpSimulator', {
 
-    'handle': function () {
-        assert(false);
+    'should exist': function () {
+        assert(httpSimulator);
+    },
+
+    'should be possible to create': function () {
+        var theHttpSimulator = httpSimulator.create();
+
+        assert(theHttpSimulator);
+    },
+
+    'should handle request': function () {
+
+        var options = {
+            simulator: {
+                service: function (options) {
+                    return {
+                        response: JSON.stringify(options)
+                    };
+                }
+            },
+            rootPath: '.',
+            useRootRelativePath: true
+        };
+        var theHttpSimulator = httpSimulator.create(options);
+        var requestBody = '{message: "Hello World!"}';
+        var mockRequest = getMockRequest();
+        var mockResponse = getMockResponse();
+        var simulatorResponse;
+        
+        theHttpSimulator.handle(mockRequest, mockResponse);
+        mockRequest.data(requestBody);
+        mockRequest.end();
+
+        simulatorResponse = JSON.parse(mockResponse.responseString);
+
+        assert.equals(mockResponse.status, 200);
+        assert.equals(mockResponse.headers['Content-Type'], 'application/json');
+        assert.equals(simulatorResponse.rootPath, '.');
+        assert.equals(simulatorResponse.rootRelativePath, 'service');
+        assert.equals(simulatorResponse.request, requestBody);
+        assert.equals(simulatorResponse.contentType, 'json');
+
     }
 
 });
-
-

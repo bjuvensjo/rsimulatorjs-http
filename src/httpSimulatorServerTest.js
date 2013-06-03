@@ -1,6 +1,8 @@
 var http = require('http');
-var log = require('../../rsimulatorjs-core/src/util/log');
 var httpSimulatorServer = require('./httpSimulatorServer');
+var jsonHandler = require('../../rsimulatorjs-core/src/handler/regexp/jsonHandler');
+var log = require('../../rsimulatorjs-core/src/util/log');
+var simulator = require('../../rsimulatorjs-core/src/simulator');
 
 var logger = log.getLogger('rsimulatorjs-http.httpSimulatorServerTest');
 
@@ -8,6 +10,11 @@ var logger = log.getLogger('rsimulatorjs-http.httpSimulatorServerTest');
     
     var options = {
         httpSimulatorConfig: {
+            simulator: simulator.create({
+                handlers: {
+                    json: jsonHandler
+                }
+            }),
             rootPath: '../test/testFiles',
             useRootRelativePath: true
         },

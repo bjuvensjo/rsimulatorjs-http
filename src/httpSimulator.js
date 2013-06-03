@@ -1,17 +1,18 @@
-var jsonHandler = require('../../rsimulatorjs-core/src/handler/regexp/jsonHandler');
 var log = require('../../rsimulatorjs-core/src/util/log');
-var simulator = require('../../rsimulatorjs-core/src/simulator');
-
 
 module.exports = (function () {
 
     var logger = log.getLogger('rsimulatorjs-http.httpSimulator');
 
-    var theSimulator = simulator.create({
-        handlers: {
-            json: jsonHandler
-        }
-    });
+    // TODO Make use of parameters and support more content types.
+    var getSimulatorContentType = function (request) {
+        var headers = request.headers;
+
+        logger.debug('Content-Type: %s', headers['content-type']);
+        logger.debug('Accept: %s', headers['accept']);
+
+        return 'json';
+    };
 
     var handle = function (request, response, options) {
         var body = '';
@@ -28,12 +29,12 @@ module.exports = (function () {
                 rootPath: options.rootPath || '.',
                 rootRelativePath: options.useRootRelativePath ? request.url : '',
                 request: body,
-                contentType: 'json'
+                contentType: getSimulatorContentType(request)
             };
 
             logger.debug('simulatorRequest: %j', simulatorRequest);
 
-            var simulatorResponse = theSimulator.service(simulatorRequest);
+            var simulatorResponse = options.simulator.service(simulatorRequest);
 
             logger.debug('simulatorResponse: %j', simulatorResponse);
             
@@ -47,6 +48,16 @@ module.exports = (function () {
 
     };
 
+    // options example:
+    // {
+    //     simulator: simulator.create({
+    //         handlers: {
+    //             json: jsonHandler
+    //         }
+    //     })
+    //     rootPath: '.',
+    //     useRootRelativePath: true
+    // }
     var create = function (options) {
         var that = {};
 
