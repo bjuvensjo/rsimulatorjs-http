@@ -21,11 +21,13 @@ var getMockRequest = function () {
 
 var getMockResponse = function () {
     var mockResponse = {
-        end: function () {
-            
+        end: function (response, encoding) {
+            if (response) {
+                this.responseString = response;
+            };
         },
-        write: function (responseString) {
-            this.responseString = responseString;
+        write: function (response, encoding) {
+            this.end(response, encoding);
         },
         writeHead: function (status, headers) {
             this.status = status;
@@ -68,13 +70,14 @@ buster.testCase('httpSimulator', {
         var simulatorResponse;
         
         theHttpSimulator.handle(mockRequest, mockResponse);
-        mockRequest.data(requestBody);
+        mockRequest.data(requestBody.substring(0, 10));
+        mockRequest.data(requestBody.substring(10));
         mockRequest.end();
-
-        simulatorResponse = JSON.parse(mockResponse.responseString);
 
         assert.equals(mockResponse.status, 200);
         assert.equals(mockResponse.headers['Content-Type'], 'application/json');
+
+        simulatorResponse = JSON.parse(mockResponse.responseString);
         assert.equals(simulatorResponse.rootPath, '.');
         assert.equals(simulatorResponse.rootRelativePath, 'service');
         assert.equals(simulatorResponse.request, requestBody);

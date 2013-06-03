@@ -1,48 +1,49 @@
+var contentType = require('./util/contentType');
+var encoding = require('./util/encoding');
+var httpResponse = require('./httpResponse');
 var log = require('../../rsimulatorjs-core/src/util/log');
+var simulatorContentType = require('./util/simulatorContentType');
+var simulatorRequest = require('./simulatorRequest');
+
 
 module.exports = (function () {
 
     var logger = log.getLogger('rsimulatorjs-http.httpSimulator');
 
-    // TODO Make use of parameters and support more content types.
-    var getSimulatorContentType = function (request) {
-        var headers = request.headers;
-
-        logger.debug('Content-Type: %s', headers['content-type']);
-        logger.debug('Accept: %s', headers['accept']);
-
-        return 'json';
-    };
-
+    // TODO Handle all methods; GET, POST, PUT, DELETE
     var handle = function (request, response, options) {
         var body = '';
+        var theContentType = contentType.get(request);
+        var theEncoding = encoding.get(theContentType);
 
         request.on('data', function(chunk) {
-            var chunkString = chunk.toString();
+            var chunkString = chunk.toString(theEncoding);
+
             logger.debug('Received body data: %s', chunkString);
+
             body += chunkString;
         });
         
         request.on('end', function() {
 
-            var simulatorRequest = {
+            var theSimulatorRequest = simulatorRequest.create({
                 rootPath: options.rootPath || '.',
-                rootRelativePath: options.useRootRelativePath ? request.url : '',
-                request: body,
-                contentType: getSimulatorContentType(request)
+                useRootRelativePath: options.useRootRelativePath,
+                url: request.url,
+                body: body,
+                contentType: contentType
+            });
+
+            var theSimulatorResponse = options.simulator.service(theSimulatorRequest);
+
+            var sendOptions = {
+                response: response,
+                simulatorResponse: theSimulatorResponse,
+                contentType: theContentType,
+                encoding: theEncoding
             };
 
-            logger.debug('simulatorRequest: %j', simulatorRequest);
-
-            var simulatorResponse = options.simulator.service(simulatorRequest);
-
-            logger.debug('simulatorResponse: %j', simulatorResponse);
-            
-            // TODO Implement handling of response according to rsimulator
-            
-            response.writeHead(200, { 'Content-Type': 'application/json' });
-            response.write(simulatorResponse.response);
-            response.end();
+            httpResponse.send(sendOptions);
 
         });            
 
