@@ -1,8 +1,6 @@
 var buster = require('buster');
 var httpSimulator = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
-var log = require('../../rsimulatorjs-core/src/util/log');
 
-var logger = log.getLogger('rsimulatorjs-http.httpSimulator-test');
 
 var getMockRequest = function () {
     var mockRequest = {
@@ -54,9 +52,9 @@ buster.testCase('httpSimulator', {
 
         var options = {
             simulator: {
-                service: function (options) {
+                service: function (simulatorRequest) {
                     return {
-                        response: JSON.stringify(options)
+                        response: JSON.stringify(simulatorRequest)
                     };
                 }
             },
@@ -75,7 +73,7 @@ buster.testCase('httpSimulator', {
         mockRequest.end();
 
         assert.equals(mockResponse.status, 200);
-        assert.equals(mockResponse.headers['Content-Type'], 'application/json');
+        assert.equals(mockResponse.headers['Content-Type'], 'application/json; charset=UTF-8');
 
         simulatorResponse = JSON.parse(mockResponse.responseString);
         assert.equals(simulatorResponse.rootPath, '.');
@@ -84,5 +82,6 @@ buster.testCase('httpSimulator', {
         assert.equals(simulatorResponse.contentType, 'json');
 
     }
+
 
 });

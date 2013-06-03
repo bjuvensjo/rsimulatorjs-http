@@ -6,8 +6,10 @@ module.exports = (function () {
 
     var charsetPattern = /charset=([0-9A-Z-]+)/;
 
+    var defaultEncoding = 'UTF-8';
+
     var getEncoding = function (contentType) {
-        var encoding = 'UTF-8';
+        var encoding;
         var charsetGroups;
         var charset;
 
@@ -21,7 +23,7 @@ module.exports = (function () {
 
         logger.debug('encoding: %s', encoding);
 
-        return encoding;
+        return encoding || defaultEncoding;
     };
 
     return {

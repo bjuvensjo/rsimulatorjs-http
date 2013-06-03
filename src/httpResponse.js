@@ -9,7 +9,7 @@ module.exports = (function () {
 
         logger.debug('simulatorResponse: %j', options.simulatorResponse);
             
-        response.writeHead(200, { 'Content-Type': options.contentType });
+        response.writeHead(200, { 'Content-Type': options.contentType + '; charset=' + options.encoding });
 
         response.end(options.simulatorResponse.response, options.encoding);
 
