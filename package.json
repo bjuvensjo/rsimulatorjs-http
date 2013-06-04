@@ -1,6 +1,6 @@
 {
     "name": "rsimulatorjs-http",
-    "version": "0.3.0",
+    "version": "0.3.2",
     "author": "Magnus Bjuvensjö <bjuvensjo@gmail.com>",
     "description": "rsimulatorjs-http",
     "contributors": [ 
@@ -9,25 +9,20 @@
             "email": "bjuvensjo@gmail.com"
         } 
     ],
-    "main": "./src/httpSimulator.js",
+    "main": "./src/module",
     "repository": {
         "type": "git",
         "url": "https://github.com/bjuvensjo/rsimulatorjs-http.git"
     },
     "dependencies" : {
-        "grunt": "~0.4.1",
-        "grunt-contrib-jshint": "~0.1.1",
-        "grunt-contrib-livereload": "~0.1.2",
-        "grunt-contrib-connect": "~0.3.0",
-        "grunt-open": "~0.2.0",
-        "grunt-regarde": "~0.1.1",
-        "http-proxy": "~v0.10.2",
+        "rsimulatorjs-core": "~0.3.2",
+        "rsimulatorjs-log": "~0.3.2",
         "underscore": ">=1.4.4"
     },
     "devDependencies": {
         "buster":  "0.5.x"
     },
-    "license": "MIT",
+    "license": "BSD",
     "engines": {
         "node": ">=0.6"
     }

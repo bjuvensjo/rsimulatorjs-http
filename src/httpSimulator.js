@@ -1,7 +1,7 @@
 var contentType = require('./util/contentType');
 var encoding = require('./util/encoding');
 var httpResponse = require('./httpResponse');
-var log = require('../../rsimulatorjs-core/src/util/log');
+var log = require('rsimulatorjs-log');
 var simulatorContentType = require('./util/simulatorContentType');
 var simulatorRequest = require('./simulatorRequest');
 

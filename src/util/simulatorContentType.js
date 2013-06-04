@@ -1,4 +1,4 @@
-var log = require('../../../rsimulatorjs-core/src/util/log');
+var log = require('rsimulatorjs-log');
 
 
 module.exports = (function () {

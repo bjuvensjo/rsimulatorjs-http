@@ -1,8 +1,5 @@
 var buster = require('buster');
 var encoding = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
-var log = require('../../../rsimulatorjs-core/src/util/log');
-
-var logger = log.getLogger('rsimulatorjs-http.util.encoding-test');
 
 
 buster.testCase('encoding', {
