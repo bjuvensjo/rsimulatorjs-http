@@ -1,6 +1,6 @@
 {
     "name": "rsimulatorjs-http",
-    "version": "0.3.2",
+    "version": "0.3.4",
     "author": "Magnus Bjuvensjö <bjuvensjo@gmail.com>",
     "description": "rsimulatorjs-http",
     "contributors": [ 
@@ -15,7 +15,7 @@
         "url": "https://github.com/bjuvensjo/rsimulatorjs-http.git"
     },
     "dependencies" : {
-        "rsimulatorjs-core": "~0.3.2",
+        "rsimulatorjs-core": "~0.3.4",
         "rsimulatorjs-log": "~0.3.2",
         "underscore": ">=1.4.4"
     },
