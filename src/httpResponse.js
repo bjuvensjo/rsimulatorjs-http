@@ -9,7 +9,7 @@ module.exports = (function () {
         var response = options.response;
 
         logger.debug('simulatorResponse: %j', options.simulatorResponse);
-        if (options.simulatorResponse === 'No simulatorResponse found!') {
+        if (options.simulatorResponse.response === 'No simulatorResponse found!') {
             response.writeHead(404, { 'Content-Type': options.contentType + '; charset=' + options.encoding });
         } else {
             response.writeHead(200, { 'Content-Type': options.contentType + '; charset=' + options.encoding });
