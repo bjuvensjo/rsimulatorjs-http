@@ -10,7 +10,8 @@ module.exports = (function () {
 
         logger.debug('simulatorResponse: %j', options.simulatorResponse);
         if (options.simulatorResponse.response === 'No simulatorResponse found!') {
-            response.writeHead(404, { 'Content-Type': options.contentType + '; charset=' + options.encoding });
+             response.writeHead(404, { 'Content-Type': options.contentType + '; charset=' + options.encoding,
+                    'Error-Message': options.simulatorResponse.response, 'Error-Code': 0});
         } else {
             response.writeHead(200, { 'Content-Type': options.contentType + '; charset=' + options.encoding });
         }
