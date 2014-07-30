@@ -62,6 +62,8 @@ module.exports = (function () {
     var create = function (options) {
         var that = {};
 
+        log.setGlobalLogLevel(options.logLevel);
+
         that.handle = function (request, response) {
             handle(request, response, options);
         };

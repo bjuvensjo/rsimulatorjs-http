@@ -8,6 +8,7 @@ module.exports = (function () {
         var httpSimulatorOptions = _.clone(options);
 
         httpSimulatorOptions.simulator = simulator;
+        simulator.setGlobalLogLevel(options.logLevel);
 
         return httpSimulator.create(httpSimulatorOptions);
     };    
