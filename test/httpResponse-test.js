@@ -24,7 +24,9 @@ buster.testCase('httpResponse', {
     'should give 200': function () {
         var options = {
             response : getMockResponse(),
-            simulatorResponse : '',
+            simulatorResponse : {
+                response: ''
+            },
             contentType: 'application/json',
             encoding: 'UTF8'
         };
@@ -35,7 +37,9 @@ buster.testCase('httpResponse', {
     'should give 404': function () {
         var options = {
             response : getMockResponse(),
-            simulatorResponse : 'No simulatorResponse found!',
+            simulatorResponse : {
+                response: 'No simulatorResponse found!'
+            },
             contentType: 'application/json',
             encoding: 'UTF8'
         };

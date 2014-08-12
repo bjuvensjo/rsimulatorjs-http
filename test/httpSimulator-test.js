@@ -43,7 +43,7 @@ buster.testCase('httpSimulator', {
     },
 
     'should be possible to create': function () {
-        var theHttpSimulator = httpSimulator.create();
+        var theHttpSimulator = httpSimulator.create({});
 
         assert(theHttpSimulator);
     },
