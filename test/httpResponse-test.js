@@ -1,6 +1,6 @@
-var buster = require('buster'),
-    httpResponse = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js')),
-    getMockResponse = function () {
+var expect = require("expect.js");
+var httpResponse = require(__filename.replace(/test/, "src").replace(/-test.js$/, ".js"));
+var getMockResponse = function () {
     var mockResponse = {
         end: function (response, encoding) {
             if (response) {
@@ -15,35 +15,37 @@ var buster = require('buster'),
             this.headers = headers;
         }
     };
-
+    
     return mockResponse;
 };
 
-buster.testCase('httpResponse', {
+describe("httpResponse", function () {
 
-    'should give 200': function () {
+    it("should give 200", function () {
         var options = {
             response : getMockResponse(),
             simulatorResponse : {
-                response: ''
+                response: ""
             },
-            contentType: 'application/json',
-            encoding: 'UTF8'
+            contentType: "application/json",
+            encoding: "UTF8"
         };
         httpResponse.send(options);
-        assert.equals(options.response.status, 200);
-    },
+        
+        expect(options.response.status).to.be(200);
+    });
 
-    'should give 404': function () {
+    it("should give 404", function () {
         var options = {
             response : getMockResponse(),
             simulatorResponse : {
-                response: 'No simulatorResponse found!'
+                response: "No simulatorResponse found!"
             },
-            contentType: 'application/json',
-            encoding: 'UTF8'
+            contentType: "application/json",
+            encoding: "UTF8"
         };
         httpResponse.send(options);
-        assert.equals(options.response.status, 404);
-    }
+        
+        expect(options.response.status).to.be(404);
+    });
 });

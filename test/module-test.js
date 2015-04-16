@@ -1,27 +1,28 @@
-var buster = require('buster');
-var module = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
+var expect = require("expect.js");
+var module = require(__filename.replace(/test/, "src").replace(/-test.js$/, ".js"));
 
-buster.testCase('module', {
+describe("module", function () {
 
-    'should have a create function object': function () {
+    it("should have a create function object", function () {
 
         var actual = module.create;
 
-        assert(actual);
+        expect(actual).to.be.ok();
     
-    },
+    });
 
-    'should create a httpSimulator with a handle function object': function () {
+    it("should create a httpSimulator with a handle function object", function () {
 
         var httpSimulator = module.create({
-            rootPath: '.',
-            useRootRelativePath: true            
+            rootPath: ".",
+            useRootRelativePath: true,
+            logLevel: 'error'
         });
 
         var actual = httpSimulator.handle;
 
-        assert(actual);
+        expect(actual).to.be.ok();
     
-    }
+    });
 
 });

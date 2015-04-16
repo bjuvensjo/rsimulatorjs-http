@@ -19,8 +19,8 @@ module.exports = (function () {
 
             if (charsetGroups) {
                 encoding = charsetGroups[1];
-            };
-        };
+            }
+        }
 
         logger.debug('encoding: %s', encoding);
 

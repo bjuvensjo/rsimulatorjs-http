@@ -1,13 +1,13 @@
-var buster = require('buster');
-var httpSimulator = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
+var expect = require("expect.js");
+var httpSimulator = require(__filename.replace(/test/, "src").replace(/-test.js$/, ".js"));
 
 
 var getMockRequest = function () {
     var mockRequest = {
-        method: 'POST',
-        url: 'service',
+        method: "POST",
+        url: "service",
         headers: {
-            'content-type': 'application/json'
+            "content-type": "application/json"
         },
         on: function (name, callback) {
             this[name] = callback;
@@ -22,7 +22,7 @@ var getMockResponse = function () {
         end: function (response, encoding) {
             if (response) {
                 this.responseString = response;
-            };
+            }
         },
         write: function (response, encoding) {
             this.end(response, encoding);
@@ -36,19 +36,21 @@ var getMockResponse = function () {
     return mockResponse;
 };
 
-buster.testCase('httpSimulator', {
+describe("httpSimulator", function () {
 
-    'should exist': function () {
-        assert(httpSimulator);
-    },
+    it("should exist", function () {
+        expect(httpSimulator).to.be.ok();
+    });
 
-    'should be possible to create': function () {
-        var theHttpSimulator = httpSimulator.create({});
+    it("should be possible to create", function () {
+        var theHttpSimulator = httpSimulator.create({
+            logLevel: 'error'
+        });
 
-        assert(theHttpSimulator);
-    },
+        expect(theHttpSimulator).to.be.ok();
+    });
 
-    'should handle request': function () {
+    it("should handle request", function () {
 
         var options = {
             simulator: {
@@ -58,8 +60,9 @@ buster.testCase('httpSimulator', {
                     };
                 }
             },
-            rootPath: '.',
-            useRootRelativePath: true
+            rootPath: ".",
+            useRootRelativePath: true,
+            logLevel: 'error'
         };
         var theHttpSimulator = httpSimulator.create(options);
         var requestBody = '{message: "Hello World!"}';
@@ -72,16 +75,15 @@ buster.testCase('httpSimulator', {
         mockRequest.data(requestBody.substring(10));
         mockRequest.end();
 
-        assert.equals(mockResponse.status, 200);
-        assert.equals(mockResponse.headers['Content-Type'], 'application/json; charset=UTF-8');
+        expect(mockResponse.status).to.be(200);
+        expect(mockResponse.headers["Content-Type"]).to.be("application/json; charset=UTF-8");
 
         simulatorResponse = JSON.parse(mockResponse.responseString);
-        assert.equals(simulatorResponse.rootPath, '.');
-        assert.equals(simulatorResponse.rootRelativePath, 'service');
-        assert.equals(simulatorResponse.request, requestBody);
-        assert.equals(simulatorResponse.contentType, 'json');
+        expect(simulatorResponse.rootPath).to.be(".");
+        expect(simulatorResponse.rootRelativePath).to.be("service");
+        expect(simulatorResponse.request).to.be(requestBody);
+        expect(simulatorResponse.contentType).to.be("json");
 
-    }
-
+    });
 
 });

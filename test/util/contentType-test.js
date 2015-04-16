@@ -1,45 +1,45 @@
-var buster = require('buster');
-var contentType = require(__filename.replace(/test/, 'src').replace(/-test.js$/, '.js'));
+var expect = require("expect.js");
+var contentType = require(__filename.replace(/test/, "src").replace(/-test.js$/, ".js"));
 
 
-buster.testCase('contentType', {
+describe("contentType", function () {
 
-    'should get "application/json" from "Content-Type: application/json"': function () {
-        var expected = 'application/json';
-
-        var request = {
-            headers: {
-                'content-type': 'application/json'
-            }
-        };
-
-        assert.equals(expected, contentType.get(request));
-
-    },
-
-    'should get "application/json" from "Content-Type: application/json; charset=ISO-8859-1"': function () {
-        var expected = 'application/json';
+    it("should get application/json from Content-Type: application/json", function () {
+        var expected = "application/json";
 
         var request = {
             headers: {
-                'content-type': 'application/json; charset=ISO-8859-1'
+                "content-type": "application/json"
             }
         };
 
-        assert.equals(expected, contentType.get(request));
+        expect(contentType.get(request)).to.be(expected);
 
-    },
+    });
 
-    'should get "text/html" from "Content-Type: text/html; charset=UTF-8"': function () {
-        var expected = 'text/html';
+    it("should get application/json from Content-Type: application/json; charset=ISO-8859-1", function () {
+        var expected = "application/json";
 
         var request = {
             headers: {
-                'content-type': 'text/html; charset=UTF-8'
+                "content-type": "application/json; charset=ISO-8859-1"
             }
         };
 
-        assert.equals(expected, contentType.get(request));
-    }
+        expect(contentType.get(request)).to.be(expected);
+
+    });
+
+    it("should get text/html from Content-Type: text/html; charset=UTF-8", function () {
+        var expected = "text/html";
+
+        var request = {
+            headers: {
+                "content-type": "text/html; charset=UTF-8"
+            }
+        };
+
+        expect(contentType.get(request)).to.be(expected);
+    });
 
 });
